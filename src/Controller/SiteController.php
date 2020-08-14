@@ -59,7 +59,7 @@ class SiteController extends AbstractController
             'categories'=>$categories
         ]);
         return $categories;
-    }
+    } 
 
      /**
      * @Route("/about-us", name="about-us")
