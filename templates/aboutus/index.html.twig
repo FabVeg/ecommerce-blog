@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Qui sommes nous ?{% endblock %}
+
+{% block body %}
+<!-- Header -->
+<div class="bg-success text-center py-5 mb-4" style="margin: 15px 0px;">
+    <div class="container">
+      <h1 class="font-weight-light text-white">Rencontrez l'équipe</h1>
+    </div>
+  </div>
+  
+  <!-- Page Content -->
+  <div class="container">
+    <div class="row">
+      <!-- Team Member 1 -->
+      {% for aboutus in aboutuss %}
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-0 shadow">
+          <img src="{{aboutus.image}}" class="card-img-top" alt="...">
+          <div class="card-body text-center">
+            <h5 class="card-title mb-0">{{aboutus.titre}}</h5>
+            <div class="card-text text-black-50">{{aboutus.job}}</div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <!-- /.row -->
+  
+  </div>
+  <!-- /.container -->
+{% endblock %}

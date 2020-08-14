@@ -1,0 +1,4 @@
+#Site:
+#    path: /
+#    controller: App\Controller\SiteController::index
+

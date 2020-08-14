@@ -1,0 +1,789 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produit{% endblock %}
+
+{% block body %}
+
+<style>
+  .similar {
+    font-family: sans-serif;
+  }
+
+  @media only screen and (max-width: 767px) {
+    .view-box {
+      visibility: hidden;
+    }
+  }
+
+  .view-box {
+    position: absolute;
+    top: -15%;
+    background: #FFF;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    width: 317px;
+    min-height: 130.51%;
+    z-index: 1;
+    box-shadow: 0 5px 30px 0px rgba(0, 0, 0, 0.1),
+      0 5px 15px 3px rgba(0, 0, 0, 0.08);
+  }
+
+  .view-box-left {
+    left: -19.7rem;
+  }
+
+  .view-box-left:before {
+    content: "";
+    position: absolute;
+    top: 42.6%;
+    left: 19.77rem;
+    z-index: 1;
+    border: solid 15px transparent;
+    border-left-color: #FFF;
+  }
+
+  .view-box-right {
+    left: 100%;
+  }
+
+  .view-box-right:before {
+    content: "";
+    position: absolute;
+    top: 42.6%;
+    left: -30px;
+    z-index: 1;
+    border: solid 15px transparent;
+    border-right-color: #FFF;
+  }
+
+  .card {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, .125);
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+
+  .card-body {
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 1.25rem;
+    min-height: 11.7rem;
+    padding-bottom: 0px;
+  }
+
+  .card-title a {
+    margin-bottom: .5rem;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.34;
+    letter-spacing: -0.32px;
+    color: #505763;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    min-height: 3rem;
+  }
+
+  .card-title a:hover {
+    color: #fdc800;
+    text-decoration: none;
+  }
+
+  .card-text {
+    margin-top: 0;
+    margin-bottom: 8px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    color: #686F7A;
+    font-size: 15px;
+    letter-spacing: -0.2px;
+  }
+
+  .card-price {
+    padding: 5px 5px 5px 5px;
+    display: flex;
+    color: #e91e63;
+    justify-content: flex-end;
+    min-height: 36px;
+    font-weight: 700;
+    font-size: 20px;
+    align-items: center;
+  }
+
+  .outer-box {
+    box-shadow: 0 0 1px 1px rgba(20, 23, 28, 0.1), 0 3px 1px 0 rgba(20, 23, 28, 0.1);
+  }
+
+  .quick-view-box-top {
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 16px;
+    margin-bottom: 5px;
+  }
+
+
+  .quick-view-box-style {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-style: normal;
+    line-height: 1.43;
+    text-align: start;
+    text-shadow: none;
+    text-transform: none;
+  }
+
+
+  .quick-view-box-top-title {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.33;
+    letter-spacing: -0.3px;
+    color: #505763;
+  }
+
+  a.quick-view-box-top-title:hover,
+  a.quick-view-box-top-title:focus {
+    color: #fdc800;
+    text-decoration: none;
+  }
+
+  .quick-view-box-middle {
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+    flex-direction: column;
+  }
+
+  .quick-view-box-middle-content {
+    -webkit-box-orient: vertical;
+    white-space: normal;
+    visibility: visible;
+    font-size: 15px;
+    line-height: 1.53;
+    letter-spacing: -0.2px;
+    color: #686F7A;
+    padding-top: 10px;
+    min-height: 320px;
+  }
+
+  .quick-view-box-bottom {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .quick-view-box-bottom-btn {
+    color: #FFF;
+    background-color: #EC5252;
+    border: 1px solid transparent;
+    width: 100%;
+    height: 40px;
+  }
+
+  .quick-view-box-bottom-btn:hover {
+    color: #fff;
+    background-color: #521822;
+    border-color: transparent;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  .preview {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+
+  @media screen and (max-width: 996px) {
+    .preview {
+      margin-bottom: 20px;
+    }
+  }
+
+  .preview-pic {
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+  }
+
+  .preview-thumbnail.nav-tabs {
+    border: none;
+    margin-top: 15px;
+  }
+
+  .preview-thumbnail.nav-tabs li {
+    width: 18%;
+    margin-right: 2.5%;
+  }
+
+  .preview-thumbnail.nav-tabs li img {
+    max-width: 100%;
+    display: block;
+  }
+
+  .preview-thumbnail.nav-tabs li a {
+    padding: 0;
+    margin: 0;
+  }
+
+  .preview-thumbnail.nav-tabs li:last-of-type {
+    margin-right: 0;
+  }
+
+  .tab-content {
+    overflow: hidden;
+  }
+
+  .tab-content img {
+    width: 100%;
+    -webkit-animation-name: opacity;
+    animation-name: opacity;
+    -webkit-animation-duration: .3s;
+    animation-duration: .3s;
+  }
+
+  .card {
+    margin-top: 50px;
+    background: #eee;
+    padding: 3em;
+    line-height: 1.5em;
+  }
+
+  @media screen and (min-width: 997px) {
+    .wrapper {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+    }
+  }
+
+  .details {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+
+  .colors {
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+  }
+
+  .product-title,
+  .price,
+  .sizes,
+  .colors {
+    text-transform: UPPERCASE;
+    font-weight: bold;
+  }
+
+  .checked,
+  .price span {
+    color: #ff9f1a;
+  }
+
+  .product-title,
+  .rating,
+  .product-description,
+  .price,
+  .vote,
+  .sizes {
+    margin-bottom: 15px;
+  }
+
+  .product-title {
+    margin-top: 0;
+  }
+
+  .size {
+    margin-right: 10px;
+  }
+
+  .size:first-of-type {
+    margin-left: 40px;
+  }
+
+  .color {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+    height: 2em;
+    width: 2em;
+    border-radius: 2px;
+  }
+
+  .color:first-of-type {
+    margin-left: 20px;
+  }
+
+  .add-to-cart,
+  .like {
+    background: #ff9f1a;
+    padding: 1.2em 1.5em;
+    border: none;
+    text-transform: UPPERCASE;
+    font-weight: bold;
+    color: #fff;
+    -webkit-transition: background .3s ease;
+    transition: background .3s ease;
+  }
+
+  .add-to-cart:hover,
+  .like:hover {
+    background: #b36800;
+    color: #fff;
+  }
+
+  .not-available {
+    text-align: center;
+    line-height: 2em;
+  }
+
+  .not-available:before {
+    font-family: fontawesome;
+    content: "\f00d";
+    color: #fff;
+  }
+
+  .orange {
+    background: #ff9f1a;
+  }
+
+  .green {
+    background: #85ad00;
+  }
+
+  .blue {
+    background: #0076ad;
+  }
+
+  .tooltip-inner {
+    padding: 1.3em;
+  }
+
+  @-webkit-keyframes opacity {
+    0% {
+      opacity: 0;
+      -webkit-transform: scale(3);
+      transform: scale(3);
+    }
+
+    100% {
+      opacity: 1;
+      -webkit-transform: scale(1);
+      transform: scale(1);
+    }
+  }
+
+  @keyframes opacity {
+    0% {
+      opacity: 0;
+      -webkit-transform: scale(3);
+      transform: scale(3);
+    }
+
+    100% {
+      opacity: 1;
+      -webkit-transform: scale(1);
+      transform: scale(1);
+    }
+  }
+
+  /******************************************************/
+
+  .be-comment-block {
+    margin-bottom: 50px !important;
+    border: 1px solid #edeff2;
+    border-radius: 2px;
+    padding: 50px 70px;
+    border: 1px solid #ffffff;
+  }
+
+  .comments-title {
+    font-size: 16px;
+    color: #262626;
+    margin-bottom: 15px;
+    font-family: 'Conv_helveticaneuecyr-bold';
+  }
+
+  .be-img-comment {
+    width: 60px;
+    height: 60px;
+    float: left;
+    margin-bottom: 15px;
+  }
+
+  .be-ava-comment {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+  }
+
+  .be-comment-content {
+    margin-left: 80px;
+  }
+
+  .be-comment-content span {
+    display: inline-block;
+    width: 49%;
+    margin-bottom: 15px;
+  }
+
+  .be-comment-name {
+    font-size: 13px;
+    font-family: 'Conv_helveticaneuecyr-bold';
+  }
+
+  .be-comment-content a {
+    color: #383b43;
+  }
+
+  .be-comment-content span {
+    display: inline-block;
+    width: 49%;
+    margin-bottom: 15px;
+  }
+
+  .be-comment-time {
+    text-align: right;
+  }
+
+  .be-comment-time {
+    font-size: 11px;
+    color: #b4b7c1;
+  }
+
+  .be-comment-text {
+    font-size: 13px;
+    line-height: 18px;
+    color: #7a8192;
+    display: block;
+    background: #f6f6f7;
+    border: 1px solid #edeff2;
+    padding: 15px 20px 20px 20px;
+  }
+
+  .form-group.fl_icon .icon {
+    position: absolute;
+    top: 1px;
+    left: 16px;
+    width: 48px;
+    height: 48px;
+    background: #f6f6f7;
+    color: #b5b8c2;
+    text-align: center;
+    line-height: 50px;
+    -webkit-border-top-left-radius: 2px;
+    -webkit-border-bottom-left-radius: 2px;
+    -moz-border-radius-topleft: 2px;
+    -moz-border-radius-bottomleft: 2px;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+  }
+
+  .form-group .form-input {
+    font-size: 13px;
+    line-height: 50px;
+    font-weight: 400;
+    color: #b4b7c1;
+    width: 100%;
+    height: 50px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border: 1px solid #edeff2;
+    border-radius: 3px;
+  }
+
+  .form-group.fl_icon .form-input {
+    padding-left: 70px;
+  }
+
+  .form-group textarea.form-input {
+    height: 150px;
+  }
+</style>
+
+<div class="container">
+  <div class="card">
+    <div class="container-fliud">
+      <div class="wrapper row">
+        <div class="preview col-md-6">
+
+          <div class="preview-pic tab-content">
+            <div class="tab-pane active" id="pic-1"><img src={{produit.image}} /></div>
+            <div class="tab-pane" id="pic-2"><img src={{produit.image}} /></div>
+            <div class="tab-pane" id="pic-3"><img src={{produit.image}} /></div>
+            <div class="tab-pane" id="pic-4"><img src={{produit.image}} /></div>
+            <div class="tab-pane" id="pic-5"><img src={{produit.image}} /></div>
+          </div>
+          <ul class="preview-thumbnail nav nav-tabs">
+            <li class="active"><a data-target="#pic-1" data-toggle="tab"><img src={{produit.image}} /></a></li>
+            <li><a data-target="#pic-2" data-toggle="tab"><img src={{produit.image}} /></a></li>
+            <li><a data-target="#pic-3" data-toggle="tab"><img src={{produit.image}} /></a></li>
+            <li><a data-target="#pic-4" data-toggle="tab"><img src={{produit.image}} /></a></li>
+            <li><a data-target="#pic-5" data-toggle="tab"><img src={{produit.image}} /></a></li>
+          </ul>
+
+        </div>
+        <div class="details col-md-6">
+          <h3 class="product-title">{{produit.titre}}</h3>
+          <div class="rating">
+            <div class="stars">
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star"></span>
+              <span class="fa fa-star"></span>
+            </div>
+            <span class="review-no">41 reviews</span>
+          </div>
+          <p class="product-description">Suspendisse quos? Tempus cras iure temporibus? Eu laudantium cubilia sem sem!
+            Repudiandae et! Massa senectus enim minim sociosqu delectus posuere.</p>
+          <h4 class="price">current price: <span>{{produit.prix}} €</span></h4>
+          <p class="vote"><strong>91%</strong> of buyers enjoyed this product! <strong>(87 votes)</strong></p>
+          <h5 class="sizes">sizes:
+            <span class="size" data-toggle="tooltip" title="small">s</span>
+            <span class="size" data-toggle="tooltip" title="medium">m</span>
+            <span class="size" data-toggle="tooltip" title="large">l</span>
+            <span class="size" data-toggle="tooltip" title="xtra large">xl</span>
+          </h5>
+          <h5 class="colors">colors:
+            <span class="color orange not-available" data-toggle="tooltip" title="Not In store"></span>
+            <span class="color green"></span>
+            <span class="color blue"></span>
+          </h5>
+          <div class="action">
+            <button class="add-to-cart btn btn-default" type="button">add to cart</button>
+            <button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="container">
+  <div class="be-comment-block">
+    <h1 class="comments-title">Comments</h1>
+    <div class="be-comment">
+
+      <div class="be-comment-content">
+
+        <span class="be-comment-name">
+          <a href="blog-detail-2.html">Ravi Sah</a>
+        </span>
+        <span class="be-comment-time">
+          <i class="fa fa-clock-o"></i>
+          May 27, 2015 at 3:14am
+        </span>
+
+        <p class="be-comment-text">
+          Pellentesque gravida tristique ultrices.
+          Sed blandit varius mauris, vel volutpat urna hendrerit id.
+          Curabitur rutrum dolor gravida turpis tristique efficitur.
+        </p>
+      </div>
+    </div>
+
+    <form class="form-block">
+      <div class="row">
+        <div class="col-xs-12 col-sm-6">
+          <div class="form-group fl_icon">
+            <div class="icon"><i class="fa fa-user"></i></div>
+            <input class="form-input" type="text" placeholder="Your name">
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 fl_icon">
+          <div class="form-group fl_icon">
+            <div class="icon"><i class="fa fa-envelope-o"></i></div>
+            <input class="form-input" type="text" placeholder="Your email">
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-12">
+          <div class="form-group">
+            <textarea class="form-input" required="" placeholder="Your text"></textarea>
+          </div>
+        </div>
+        <a class="btn btn-primary pull-right">submit</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+<div class="container similar" style="margin: 2vw auto;">
+  <div class="row">
+    <div class="col-sm-3 col-md-3">
+      <div class="outer-box" id="let-1" onmouseenter="quick_view_box_content(this)">
+        <div class="card">
+          <img class="card-img-top"
+            src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22286%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20286%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_1698fca32b1%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A14pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_1698fca32b1%22%3E%3Crect%20width%3D%22286%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22107.203125%22%20y%3D%2296.3%22%3E286x180%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"
+            alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title"><a href="#">Card titulus I - Lorem Ipsum</a></h5>
+            <p class="card-text">Lorem ipsum dolor sit amet, ex possit iracundia pro, no cum aliquam luptatum. Ad
+              albucius consetetur has, illud iracundia nam id. Ei nullam audire gubergren pri.</p>
+            <div class="card-price">£32,99</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3 col-md-3">
+      <div class="outer-box" id="let-2" onmouseenter="quick_view_box_content(this)">
+        <div class="card">
+          <img class="card-img-top"
+            src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22286%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20286%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_1698fca32b1%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A14pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_1698fca32b1%22%3E%3Crect%20width%3D%22286%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22107.203125%22%20y%3D%2296.3%22%3E286x180%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"
+            alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title"><a href="#">Card titulus II - Lorem ipsum dolor sit amet, consectetur adipiscing
+                elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </a></h5>
+            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+              laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
+              esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
+              qui officia deserunt mollit anim id est laborum.</p>
+            <div class="card-price">£343</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3 col-md-3">
+      <div class="outer-box" id="let-3" onmouseenter="quick_view_box_content(this)">
+        <div class="card">
+          <img class="card-img-top"
+            src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22286%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20286%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_1698fca32b1%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A14pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_1698fca32b1%22%3E%3Crect%20width%3D%22286%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22107.203125%22%20y%3D%2296.3%22%3E286x180%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"
+            alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title"><a href="#">Card titulus III</a></h5>
+            <p class="card-text">Vix adipisci recusabo eu. Ex stet error duo. Et verear gubergren euripidis eos, eum
+              semper labores rationibus an. Eam nobis appareat invidunt ei, quo lorem nullam inciderint id.</p>
+            <div class="card-price">Free</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3 col-md-3">
+      <div class="outer-box" id="let-4" onmouseenter="quick_view_box_content(this)">
+        <div class="card">
+          <img class="card-img-top"
+            src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22286%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20286%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_1698fca32b1%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A14pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_1698fca32b1%22%3E%3Crect%20width%3D%22286%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22107.203125%22%20y%3D%2296.3%22%3E286x180%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"
+            alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title"><a href="#">Card titulus IV</a></h5>
+            <p class="card-text">Te sit euismod dissentiunt. Ex placerat salutatus voluptatum pri. Minim pericula
+              incorrupte cum ei, sed no justo paulo. Ut simul utroque erroribus eum. Vix no labitur suavitate, sed
+              quaeque percipit ne. Sed ut tale quidam inermis, at quo sanctus interpretaris.</p>
+            <div class="card-price">£28</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="quick-view-box" style="display:none;">
+      <div class="quick-view-box-top quick-view-box-style">
+        <a href="#" class="quick-view-box-top-title"><span></span></a>
+      </div>
+      <div class="quick-view-box-middle">
+        <div class="quick-view-box-middle-content"></div>
+      </div>
+      <div class="quick-view-box-bottom align-bottom">
+        <button type="button" class="btn quick-view-box-bottom-btn ">Temere Accessum</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% block javascript %}
+<script>
+  $(document).ready(function () {
+    //-- Click on detail
+    $("ul.menu-items > li").on("click", function () {
+      $("ul.menu-items > li").removeClass("active");
+      $(this).addClass("active");
+    })
+
+    $(".attr,.attr2").on("click", function () {
+      var clase = $(this).attr("class");
+
+      $("." + clase).removeClass("active");
+      $(this).addClass("active");
+    })
+
+    //-- Click on QUANTITY
+    $(".btn-minus").on("click", function () {
+      var now = $(".section > div > input").val();
+      if ($.isNumeric(now)) {
+        if (parseInt(now) - 1 > 0) { now--; }
+        $(".section > div > input").val(now);
+      } else {
+        $(".section > div > input").val("1");
+      }
+    })
+    $(".btn-plus").on("click", function () {
+      var now = $(".section > div > input").val();
+      if ($.isNumeric(now)) {
+        $(".section > div > input").val(parseInt(now) + 1);
+      } else {
+        $(".section > div > input").val("1");
+      }
+    })
+  })
+  function quick_view_box_content(e) {
+    let title = e.querySelector("h5[class='card-title']  a").innerHTML;
+    let content = e.querySelector("p[class='card-text']").innerHTML;
+
+    document.querySelector("a[class='quick-view-box-top-title'] span").innerHTML = title;
+    document.querySelector("div[class='quick-view-box-middle-content']").innerHTML = content;
+
+    let width_from_left;
+    let full_width_of_screen = $(window).width() / 2;
+    $('.outer-box').mouseenter(function (event) {
+      $(this).prepend($("div#quick-view-box"));
+      width_from_left = event.pageX;
+      if (width_from_left > full_width_of_screen + full_width_of_screen * 0.25) {
+        $('#quick-view-box').attr('class', 'view-box view-box-left');
+      } else {
+        $('#quick-view-box').attr('class', 'view-box view-box-right');
+      }
+      $("#quick-view-box", this).show();
+    }).mouseleave(function () {
+      $("#quick-view-box", this).hide();
+    });
+  }
+
+</script>
+{% endblock %}
+{% endblock %}

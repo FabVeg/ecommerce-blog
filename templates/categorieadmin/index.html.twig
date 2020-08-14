@@ -1,0 +1,40 @@
+{% extends 'baseadmin.html.twig' %}
+
+{% block title %}Categorie{% endblock %}
+
+{% block body %}
+<h1>Categorie</h1>
+<table id="myTable" class="display nowrap dataTable dtr-inline collapsed" style="width: 100%;" role="grid"
+    aria-describedby="example_info">
+    <thead>
+        <tr role="row">
+            <th class="sorting_asc" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 50%;"
+                aria-sort="ascending" aria-label="Name: activate to sort column descending">Titre</th>
+            <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 50%;"
+                aria-label="Position: activate to sort column ascending">Image</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for categorie in categorieadmin %}
+        <tr role="row" class="even">
+            <td class="sorting_1" tabindex="0">{{categorie.titre}}</td>
+            <td>{{categorie.image}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <th rowspan="1" colspan="1">Titre</th>
+            <th rowspan="1" colspan="1">Image</th>
+        </tr>
+    </tfoot>
+</table>
+<form action="" methd="POST">
+    <br>
+    <input type="text" name="titre" placeholder="Titre">
+    <br>
+    <input type="text" name="image" placeholder="Image">
+    <input class="btn" type="submit" value="Ajouter">
+</form>
+
+{% endblock %}
